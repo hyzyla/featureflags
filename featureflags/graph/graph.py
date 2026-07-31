@@ -308,6 +308,10 @@ async def root_auth_methods() -> AuthMethodsInfo:
     )
 
 
+async def root_confirmation_required(_fields: list) -> list[bool]:
+    return [runtime_config.ui.confirmation_required]
+
+
 async def root_oidc_providers() -> list[OidcProviderInfo]:
     if runtime_config.oidc is None:
         return []
@@ -828,6 +832,9 @@ RootNode = Root(
             ],
         ),
         Field("authenticated", Boolean, root_authenticated),
+        Field(
+            "confirmationRequired", Boolean, root_confirmation_required
+        ),
         Link("version", TypeRef["Version"], root_version, requires=None),
         Link(
             "authMethods",

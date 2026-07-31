@@ -13,7 +13,6 @@ import {
   Space,
   Switch,
   Divider,
-  Popconfirm,
   message,
   Input,
   Modal,
@@ -35,18 +34,28 @@ import {
   useProjectsMap,
 } from './context';
 import { ValueConditions } from './ValueConditions';
+import { ConfirmableButton } from './ConfirmableButton';
 import { TYPES, KIND_TO_TYPE, KIND, TYPE_TO_KIND } from './constants';
 import { useValueActions } from './actions';
 import { copyToClipboard, replaceValueInArray, formatTimestamp } from './utils';
 import { VALUE_HISTORY_QUERY } from "./queries";
+import { useAuth } from '../hooks';
 
+const PRODUCTION_CONFIRM_TITLE = 'This changes production';
 
 const ResetButton = ({ onClick, disabled }) => {
+  const { auth } = useAuth();
   const style = disabled ? {} : { background: '#f90', color: '#fff' };
   return (
-    <Button onClick={onClick} disabled={disabled} style={style}>
+    <ConfirmableButton
+      onClick={onClick}
+      disabled={disabled}
+      style={style}
+      requireConfirmation={auth.confirmationRequired}
+      title={PRODUCTION_CONFIRM_TITLE}
+    >
       reset
-    </Button>
+    </ConfirmableButton>
   );
 }
 
@@ -58,8 +67,25 @@ const CancelButton = ({ onClick, disabled }) => {
     </Button>
   );
 }
+
+const ApplyButton = ({ onClick, disabled }) => {
+  const { auth } = useAuth();
+  return (
+    <ConfirmableButton
+      onClick={onClick}
+      disabled={disabled}
+      type="primary"
+      requireConfirmation={auth.confirmationRequired}
+      title={PRODUCTION_CONFIRM_TITLE}
+    >
+      apply
+    </ConfirmableButton>
+  );
+}
+
 const DeleteButton = ({ onClick }) => {
   const { name } = useValueState()
+  const { auth } = useAuth();
 
   function confirm() {
     onClick();
@@ -67,16 +93,19 @@ const DeleteButton = ({ onClick }) => {
   }
 
   return (
-    <Popconfirm
-      title="Are you sure to delete this value?"
+    <ConfirmableButton
+      requireConfirmation={true}
+      title={
+        auth.confirmationRequired
+          ? PRODUCTION_CONFIRM_TITLE
+          : 'Are you sure to delete this value?'
+      }
       onConfirm={confirm}
-      okText="Yes"
-      cancelText="No"
+      type="primary"
+      danger
     >
-      <Button type="primary" danger>
-        delete
-      </Button>
-    </Popconfirm>
+      delete
+    </ConfirmableButton>
   );
 }
 
@@ -120,9 +149,7 @@ const Buttons = ({ onReset, onCancel, onSave, onDelete, onToggle, onHistory }) =
         <ResetButton onClick={onReset} disabled={!overridden}>
           reset
         </ResetButton>
-        <Button onClick={onSave} type="primary" disabled={!dirty}>
-          apply
-        </Button>
+        <ApplyButton onClick={onSave} disabled={!dirty} />
         <CancelButton onClick={onCancel} disabled={!dirty} />
         <DeleteButton onClick={onDelete} />
       </Space>
