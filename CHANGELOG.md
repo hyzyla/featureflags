@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-07-31
+
 ### Added
 - **Production change confirmation**: new `ui.confirmation_required` config option. When
   enabled, applying, resetting, or deleting a flag/value in the UI asks for confirmation via
