@@ -157,6 +157,12 @@ class SentrySettings(BaseSettings):
     shutdown_timeout: int = 1
 
 
+class UiSettings(BaseSettings):
+    # When true, the UI asks for confirmation before applying, resetting, or
+    # deleting a flag/value — intended for production-like environments.
+    confirmation_required: bool = False
+
+
 class Config(BaseSettings):
     debug: bool
     secret: str = Field(..., alias="SECRET")
@@ -171,6 +177,7 @@ class Config(BaseSettings):
     logging: LoggingSettings
     instrumentation: InstrumentationSettings
     sentry: SentrySettings
+    ui: UiSettings = UiSettings()
 
     app: AppSettings
     http: HttpSettings

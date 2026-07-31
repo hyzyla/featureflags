@@ -8,6 +8,7 @@ export const AuthContext = createContext({});
 const AUTH_QUERY = gql`
   query Auth {
     authenticated
+    confirmationRequired
     authMethods {
       ldapEnabled
       oidcEnabled
@@ -58,11 +59,13 @@ export function AuthProvider({ children }) {
     }
   });
   const authenticated = loading ? false : data.authenticated;
+  const confirmationRequired = loading ? false : data.confirmationRequired;
   const authMethods = loading ? null : data.authMethods;
   const oidcProviders = loading ? [] : (data.oidcProviders || []);
 
   const auth = {
     authenticated,
+    confirmationRequired,
     authMethods,
     oidcProviders,
   };

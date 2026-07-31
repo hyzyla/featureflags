@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Production change confirmation**: new `ui.confirmation_required` config option. When
+  enabled, applying, resetting, or deleting a flag/value in the UI asks for confirmation via
+  an antd dialog before the change is sent.
 - **Slack notifications**: flag and value changes are posted to Slack via
   incoming webhooks. Notification channels (name + webhook URL) are managed
   on a new global settings page (gear icon in the sidebar) and selected

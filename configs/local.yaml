@@ -50,6 +50,11 @@ ldap:
 #           name: cli
 #           read_only: true
 
+ui:
+  # When true, the UI asks for confirmation before applying, resetting, or
+  # deleting a flag/value. Intended for production-like environments.
+  confirmation_required: false
+
 instrumentation:
   prometheus_port: 9100
 

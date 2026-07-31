@@ -246,6 +246,18 @@ async def test_authenticated(state, value, db_engine, graph_engine):
 
 
 @pytest.mark.asyncio
+async def test_confirmation_required_default(db_engine, graph_engine):
+    query = build([Q.confirmationRequired])
+
+    user_session = UserSession(
+        ident=None, state=UnknownState(user=None), secret="secret"
+    )
+    result = await exec_graph(graph_engine, query, db_engine, user_session)
+
+    assert result["confirmationRequired"] is False
+
+
+@pytest.mark.asyncio
 async def test_changes(db_engine, graph_engine, test_session):
     flag = await mk_flag(db_engine)
     auth_user = await mk_auth_user(db_engine)
