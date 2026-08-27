@@ -112,10 +112,10 @@ class Flag(Base):
     enabled = Column(Boolean)
     created_timestamp = Column(
         TIMESTAMP,
-        default=utcnow(),
+        default=utcnow,
         nullable=True,
     )
-    reported_timestamp = Column(TIMESTAMP, default=utcnow(), nullable=True)
+    reported_timestamp = Column(TIMESTAMP, default=utcnow, nullable=True)
 
     project: UUID = Column(ForeignKey("project.id"), nullable=False)
 
@@ -199,8 +199,8 @@ class Value(Base):
     enabled = Column(Boolean)
     value_default = Column(String, nullable=False)
     value_override = Column(String, nullable=False)
-    created_timestamp = Column(TIMESTAMP, default=utcnow(), nullable=True)
-    reported_timestamp = Column(TIMESTAMP, default=utcnow(), nullable=True)
+    created_timestamp = Column(TIMESTAMP, default=utcnow, nullable=True)
+    reported_timestamp = Column(TIMESTAMP, default=utcnow, nullable=True)
 
     project: UUID = Column(ForeignKey("project.id"), nullable=False)
 
