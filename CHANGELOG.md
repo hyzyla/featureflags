@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Naive UTC helper**: replaced every `datetime.utcnow()` call with a single
+  `featureflags.utils.utcnow()` helper. The returned value is still naive UTC, so
+  stored timestamps and comparisons are unchanged, but the code no longer depends on
+  an API that Python deprecated in 3.12 and plans to remove. The ruff rule `DTZ003`
+  is enabled again so new calls cannot come back.
+
 ## [2.0.0] - 2026-07-31
 
 ### Added
